@@ -19,6 +19,7 @@ public final class CustomerMapper {
      */
     public static Customer toCustomer(CustomerDto customerDto) {
         return Customer.builder()
+                .userProfileId(customerDto.userProfileId())
                 .email(customerDto.email())
                 .firstName(customerDto.firstName())
                 .lastName(customerDto.lastName())
@@ -33,6 +34,7 @@ public final class CustomerMapper {
      */
     public static CustomerDto toCustomerDTO(Customer customer) {
         return CustomerDto.builder()
+                .userProfileId(customer.getUserProfileId())
                 .email(customer.getEmail())
                 .firstName(customer.getFirstName())
                 .lastName(customer.getLastName())
