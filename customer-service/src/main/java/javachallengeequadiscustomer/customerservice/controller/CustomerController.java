@@ -16,6 +16,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * The type Customer controller.
+ */
 @RestController
 @RequestMapping("api/v1/customers")
 @AllArgsConstructor
@@ -23,20 +26,44 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+    /**
+     * Gets all customers.
+     *
+     * @return the all customers
+     */
     @GetMapping
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
         return ResponseEntity.ok().body(customerService.findAllCustomers());
     }
 
+    /**
+     * Gets customer by id.
+     *
+     * @param userId the user id
+     * @return the customer by id
+     */
     @GetMapping("{userId}")
     public ResponseEntity<CustomerDto> getCustomerById(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok().body(customerService.findCustomerById(userId));
     }
+
+    /**
+     * Gets customer by user profile id.
+     *
+     * @param userProfileId the user profile id
+     * @return the customer by user profile id
+     */
     @GetMapping("/userProfileId/{userProfileId}")
     public ResponseEntity<CustomerDto> getCustomerByUserProfileId(@PathVariable("userProfileId") Long userProfileId) {
         return ResponseEntity.ok().body(customerService.findCustomerByUserProfileId(userProfileId));
     }
 
+    /**
+     * Create customer response entity.
+     *
+     * @param customerDto the customer dto
+     * @return the response entity
+     */
     @PostMapping
     public ResponseEntity<Void> createCustomer(@RequestBody CustomerDto customerDto) {
         Customer createdCustomer = customerService.createCustomer(customerDto);
