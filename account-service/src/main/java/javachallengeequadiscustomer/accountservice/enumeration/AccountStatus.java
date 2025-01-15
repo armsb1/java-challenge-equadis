@@ -1,4 +1,4 @@
-package javachallengeequadiscustomer.accountservice;
+package javachallengeequadiscustomer.accountservice.enumeration;
 
 /**
  * The enum Account status.

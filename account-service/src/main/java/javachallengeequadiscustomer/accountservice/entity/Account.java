@@ -6,7 +6,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import javachallengeequadiscustomer.accountservice.AccountStatus;
+import javachallengeequadiscustomer.accountservice.enumeration.AccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

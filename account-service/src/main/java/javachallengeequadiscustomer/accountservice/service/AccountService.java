@@ -1,6 +1,6 @@
 package javachallengeequadiscustomer.accountservice.service;
 
-import javachallengeequadiscustomer.accountservice.AccountStatus;
+import javachallengeequadiscustomer.accountservice.enumeration.AccountStatus;
 import javachallengeequadiscustomer.accountservice.entity.Account;
 import javachallengeequadiscustomer.accountservice.external.clients.customer.CustomerExternalService;
 import javachallengeequadiscustomer.accountservice.external.clients.customer.model.CustomerDto;
