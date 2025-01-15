@@ -47,10 +47,11 @@ public final class AccountMapper {
      * @param account    the account
      * @param accountDto the account dto
      */
-    public static void updateAccount(Account account, AccountDto accountDto) {
+    public static Account updateAccount(Account account, AccountDto accountDto) {
         account.setAccountNumber(accountDto.accountNumber());
         account.setTotalBalance(accountDto.totalBalance());
         account.setUserProfileId(accountDto.userProfileId());
+        return account;
     }
 
 }

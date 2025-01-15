@@ -79,7 +79,7 @@ public class AccountService {
         Account accountToUpdate = accountRepository.findByAccountNumber(accountDto.accountNumber())
                 .orElseThrow(() -> new IllegalArgumentException("Account doesn't exist"));
 
-        AccountMapper.updateAccount(accountToUpdate, accountDto);
+        accountRepository.save(AccountMapper.updateAccount(accountToUpdate, accountDto));
     }
 
     /**
