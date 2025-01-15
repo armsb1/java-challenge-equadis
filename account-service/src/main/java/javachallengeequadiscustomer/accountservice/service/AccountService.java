@@ -1,12 +1,11 @@
 package javachallengeequadiscustomer.accountservice.service;
 
-import javachallengeequadiscustomer.accountservice.enumeration.AccountStatus;
 import javachallengeequadiscustomer.accountservice.entity.Account;
+import javachallengeequadiscustomer.accountservice.enumeration.AccountStatus;
 import javachallengeequadiscustomer.accountservice.external.clients.customer.CustomerExternalService;
 import javachallengeequadiscustomer.accountservice.external.clients.customer.model.CustomerDto;
 import javachallengeequadiscustomer.accountservice.mapper.AccountMapper;
 import javachallengeequadiscustomer.accountservice.model.AccountDto;
-import javachallengeequadiscustomer.accountservice.model.UpdateAccountRequest;
 import javachallengeequadiscustomer.accountservice.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -74,13 +73,13 @@ public class AccountService {
     /**
      * Update account.
      *
-     * @param updateAccountRequest the update account request
+     * @param accountDto the update account request
      */
-    public void updateAccount(UpdateAccountRequest updateAccountRequest) {
-        Account accountToUpdate = accountRepository.findByAccountNumber(updateAccountRequest.accountNumber())
+    public void updateAccount(AccountDto accountDto) {
+        Account accountToUpdate = accountRepository.findByAccountNumber(accountDto.accountNumber())
                 .orElseThrow(() -> new IllegalArgumentException("Account doesn't exist"));
 
-        AccountMapper.updateAccount(accountToUpdate, updateAccountRequest);
+        AccountMapper.updateAccount(accountToUpdate, accountDto);
     }
 
     /**

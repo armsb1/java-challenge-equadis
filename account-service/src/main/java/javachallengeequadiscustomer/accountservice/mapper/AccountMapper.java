@@ -2,7 +2,6 @@ package javachallengeequadiscustomer.accountservice.mapper;
 
 import javachallengeequadiscustomer.accountservice.entity.Account;
 import javachallengeequadiscustomer.accountservice.model.AccountDto;
-import javachallengeequadiscustomer.accountservice.model.UpdateAccountRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +20,7 @@ public final class AccountMapper {
     public static Account toAccount(AccountDto accountDto) {
         return Account.builder()
                 .accountNumber(accountDto.accountNumber())
+                .accountStatus(accountDto.accountStatus())
                 .totalBalance(accountDto.totalBalance())
                 .userProfileId(accountDto.userProfileId())
                 .build();
@@ -35,6 +35,7 @@ public final class AccountMapper {
     public static AccountDto toAccountDTO(Account account) {
         return AccountDto.builder()
                 .accountNumber(account.getAccountNumber())
+                .accountStatus(account.getAccountStatus())
                 .totalBalance(account.getTotalBalance())
                 .userProfileId(account.getUserProfileId())
                 .build();
@@ -46,7 +47,7 @@ public final class AccountMapper {
      * @param account    the account
      * @param accountDto the account dto
      */
-    public static void updateAccount(Account account, UpdateAccountRequest accountDto) {
+    public static void updateAccount(Account account, AccountDto accountDto) {
         account.setAccountNumber(accountDto.accountNumber());
         account.setTotalBalance(accountDto.totalBalance());
         account.setUserProfileId(accountDto.userProfileId());

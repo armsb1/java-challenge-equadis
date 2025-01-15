@@ -2,7 +2,6 @@ package javachallengeequadiscustomer.accountservice.controller;
 
 import javachallengeequadiscustomer.accountservice.entity.Account;
 import javachallengeequadiscustomer.accountservice.model.AccountDto;
-import javachallengeequadiscustomer.accountservice.model.UpdateAccountRequest;
 import javachallengeequadiscustomer.accountservice.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -74,12 +73,12 @@ public class AccountController {
     /**
      * Update account response entity.
      *
-     * @param updateAccountRequest the update account request
+     * @param accountDto the update account request
      * @return the response entity
      */
     @PutMapping()
-    public ResponseEntity<Void> updateAccount(@RequestBody UpdateAccountRequest updateAccountRequest) {
-        accountService.updateAccount(updateAccountRequest);
+    public ResponseEntity<Void> updateAccount(@RequestBody AccountDto accountDto) {
+        accountService.updateAccount(accountDto);
         return ResponseEntity.ok().build();
     }
 
