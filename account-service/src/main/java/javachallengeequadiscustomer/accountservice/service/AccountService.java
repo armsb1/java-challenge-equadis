@@ -91,8 +91,8 @@ public class AccountService {
      */
     public Account createAccount(AccountDto accountDto) {
         ResponseEntity<CustomerDto> customerToCreateAccount = customerExternalService.getCustomerByUserProfileId(accountDto.userProfileId());
-        if (!customerToCreateAccount.getStatusCode().is2xxSuccessful() &&
-                customerToCreateAccount.getBody() != null) {
+        if (!customerToCreateAccount.getStatusCode().is2xxSuccessful() ||
+                customerToCreateAccount.getBody() == null) {
             throw new IllegalArgumentException("user doesn't exist");
         }
 
