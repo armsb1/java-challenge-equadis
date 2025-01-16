@@ -98,7 +98,7 @@ public class AccountController {
                     .buildAndExpand(createdAccount.getAccountId())
                     .toUri();
 
-            return ResponseEntity.created(location).body(createdAccount.getUserProfileId());
+            return ResponseEntity.created(location).body(createdAccount.getAccountNumber());
 
         }
 }
