@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * The interface Account external service.
  */
-@FeignClient(name = "account-service", url = "http://localhost:8080/api/v1/accounts", configuration = FeignConfiguration.class)
+@FeignClient(name = "account-service", url = "${account-service.url}", configuration = FeignConfiguration.class)
 public interface AccountExternalService {
 
     /**
