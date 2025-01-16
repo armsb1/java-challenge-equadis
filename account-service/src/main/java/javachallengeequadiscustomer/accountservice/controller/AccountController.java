@@ -1,5 +1,6 @@
 package javachallengeequadiscustomer.accountservice.controller;
 
+import jakarta.validation.Valid;
 import javachallengeequadiscustomer.accountservice.entity.Account;
 import javachallengeequadiscustomer.accountservice.model.AccountDto;
 import javachallengeequadiscustomer.accountservice.service.AccountService;
@@ -77,7 +78,7 @@ public class AccountController {
      * @return the response entity
      */
     @PutMapping()
-    public ResponseEntity<Void> updateAccount(@RequestBody AccountDto accountDto) {
+    public ResponseEntity<Void> updateAccount(@Valid @RequestBody AccountDto accountDto) {
         accountService.updateAccount(accountDto);
         return ResponseEntity.ok().build();
     }
@@ -89,7 +90,7 @@ public class AccountController {
      * @return the response entity
      */
     @PostMapping()
-        public ResponseEntity<Void> createAccount(@RequestBody AccountDto accountDto) {
+        public ResponseEntity<Long> createAccount(@Valid @RequestBody AccountDto accountDto) {
             Account createdAccount = accountService.createAccount(accountDto);
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -97,7 +98,7 @@ public class AccountController {
                     .buildAndExpand(createdAccount.getAccountId())
                     .toUri();
 
-            return ResponseEntity.created(location).build();
+            return ResponseEntity.created(location).body(createdAccount.getUserProfileId());
 
         }
 }

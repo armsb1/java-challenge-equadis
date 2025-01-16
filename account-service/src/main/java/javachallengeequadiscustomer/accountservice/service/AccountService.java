@@ -2,6 +2,8 @@ package javachallengeequadiscustomer.accountservice.service;
 
 import javachallengeequadiscustomer.accountservice.entity.Account;
 import javachallengeequadiscustomer.accountservice.enumeration.AccountStatus;
+import javachallengeequadiscustomer.accountservice.exception.DuplicateResourceException;
+import javachallengeequadiscustomer.accountservice.exception.ResourceNotFoundException;
 import javachallengeequadiscustomer.accountservice.external.clients.customer.CustomerExternalService;
 import javachallengeequadiscustomer.accountservice.external.clients.customer.model.CustomerDto;
 import javachallengeequadiscustomer.accountservice.mapper.AccountMapper;
@@ -44,7 +46,10 @@ public class AccountService {
      * @return the account dto
      */
     public AccountDto findAccountById(Long id) {
-        return AccountMapper.toAccountDTO(accountRepository.findById(id).orElseThrow());
+        return AccountMapper.toAccountDTO(
+                accountRepository
+                        .findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("There is no account with the id " + id)));
     }
 
     /**
@@ -54,7 +59,10 @@ public class AccountService {
      * @return the account dto
      */
     public AccountDto findByAccountNumber(Long accountNumber) {
-        return AccountMapper.toAccountDTO(accountRepository.findByAccountNumber(accountNumber).orElseThrow());
+        return AccountMapper.toAccountDTO(
+                accountRepository
+                        .findByAccountNumber(accountNumber)
+                        .orElseThrow(() -> new ResourceNotFoundException("There is no account with the accountNumber " + accountNumber)));
     }
 
     /**
@@ -76,8 +84,10 @@ public class AccountService {
      * @param accountDto the update account request
      */
     public void updateAccount(AccountDto accountDto) {
-        Account accountToUpdate = accountRepository.findByAccountNumber(accountDto.accountNumber())
-                .orElseThrow(() -> new IllegalArgumentException("Account doesn't exist"));
+        Account accountToUpdate =
+                accountRepository
+                        .findByAccountNumber(accountDto.accountNumber())
+                        .orElseThrow(() -> new ResourceNotFoundException("There is no account with the accountNumber " + accountDto.accountNumber()));
 
         accountRepository.save(AccountMapper.updateAccount(accountToUpdate, accountDto));
     }
@@ -92,7 +102,7 @@ public class AccountService {
         ResponseEntity<CustomerDto> customerToCreateAccount = customerExternalService.getCustomerByUserProfileId(accountDto.userProfileId());
         if (!customerToCreateAccount.getStatusCode().is2xxSuccessful() ||
                 customerToCreateAccount.getBody() == null) {
-            throw new IllegalArgumentException("user doesn't exist");
+            throw new ResourceNotFoundException("There is no account with the accountNumber " + accountDto.accountNumber());
         }
 
         Long accountNumber = accountDto.accountNumber() != null
@@ -100,7 +110,7 @@ public class AccountService {
                 : generateAccountNumber();
 
         if (accountRepository.existsByAccountNumber(accountNumber)) {
-            throw new IllegalArgumentException("Account with that number already exists.");
+            throw new DuplicateResourceException("Account with number " + accountNumber + " already exists.");
         }
 
         Account account = AccountMapper.toAccount(accountDto);

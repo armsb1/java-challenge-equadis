@@ -1,5 +1,6 @@
 package javachallengeequadiscustomer.customerservice.controller;
 
+import jakarta.validation.Valid;
 import javachallengeequadiscustomer.customerservice.entity.Customer;
 import javachallengeequadiscustomer.customerservice.model.CustomerDto;
 import javachallengeequadiscustomer.customerservice.service.CustomerService;
@@ -65,7 +66,7 @@ public class CustomerController {
      * @return the response entity
      */
     @PostMapping
-    public ResponseEntity<Void> createCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<Long> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
         Customer createdCustomer = customerService.createCustomer(customerDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -73,6 +74,6 @@ public class CustomerController {
                 .buildAndExpand(createdCustomer.getUserId())
                 .toUri();
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(createdCustomer.getUserProfileId());
     }
 }

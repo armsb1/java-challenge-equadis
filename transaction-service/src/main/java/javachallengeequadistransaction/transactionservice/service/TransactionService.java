@@ -2,6 +2,8 @@ package javachallengeequadistransaction.transactionservice.service;
 
 import javachallengeequadistransaction.transactionservice.entity.Transaction;
 import javachallengeequadistransaction.transactionservice.enumeration.TransactionStatus;
+import javachallengeequadistransaction.transactionservice.exception.InsufficientBalanceException;
+import javachallengeequadistransaction.transactionservice.exception.ResourceNotFoundException;
 import javachallengeequadistransaction.transactionservice.external.AccountExternalService;
 import javachallengeequadistransaction.transactionservice.external.enumeration.AccountStatus;
 import javachallengeequadistransaction.transactionservice.external.model.AccountDto;
@@ -77,7 +79,7 @@ public class TransactionService {
 
         BigDecimal updatedBalance = transactionAccount.totalBalance().subtract(transactionDto.amount());
         if (updatedBalance.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Can't withdraw transaction because amount is higher than current balance");
+            throw new InsufficientBalanceException("Can't withdraw transaction because amount is higher than current balance");
         }
 
         return getTransactionResponse(transactionDto, transactionAccount, updatedBalance);
@@ -87,16 +89,16 @@ public class TransactionService {
         ResponseEntity<AccountDto> transactionAccountResponse = accountExternalService.getAccountByAccountNumber(transactionDto.accountNumber());
 
         if (!transactionAccountResponse.getStatusCode().is2xxSuccessful()) {
-            throw new IllegalArgumentException("Problems with the request");
+            throw new ResourceNotFoundException("Problems with the request");
         }
 
         AccountDto transactionAccount = transactionAccountResponse.getBody();
         if(transactionAccount == null) {
-            throw new IllegalArgumentException("Account doesn't exist");
+            throw new ResourceNotFoundException("Transaction not found");
         }
         
         if (transactionAccount.accountStatus() != AccountStatus.ACTIVE) {
-            throw new IllegalArgumentException("Account is not active and cannot make transaction");
+            throw new IllegalStateException("Account is not active and cannot make transaction");
         }
         return transactionAccount;
     }

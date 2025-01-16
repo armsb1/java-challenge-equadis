@@ -19,6 +19,7 @@ public final class TransactionMapper {
      */
     public static Transaction toTransaction(TransactionDto accountDto) {
         return Transaction.builder()
+                .referenceId(accountDto.referenceId())
                 .accountNumber(accountDto.accountNumber())
                 .amount(accountDto.amount())
                 .comments(accountDto.comments())
@@ -33,6 +34,7 @@ public final class TransactionMapper {
      */
     public static TransactionDto toTransactionDTO(Transaction account) {
         return TransactionDto.builder()
+                .referenceId(account.getReferenceId())
                 .accountNumber(account.getAccountNumber())
                 .amount(account.getAmount())
                 .comments(account.getComments())

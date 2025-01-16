@@ -1,5 +1,6 @@
 package javachallengeequadistransaction.transactionservice.controller;
 
+import jakarta.validation.Valid;
 import javachallengeequadistransaction.transactionservice.model.TransactionDto;
 import javachallengeequadistransaction.transactionservice.model.TransactionResponse;
 import javachallengeequadistransaction.transactionservice.service.TransactionService;
@@ -52,7 +53,7 @@ public class TransactionController {
      * @return the response entity
      */
     @PostMapping("/deposit")
-    public ResponseEntity<TransactionResponse> depositTransaction(@RequestBody TransactionDto transactionDto) {
+    public ResponseEntity<TransactionResponse> depositTransaction(@Valid @RequestBody TransactionDto transactionDto) {
         return ResponseEntity.ok().body(transactionService.depositTransaction(transactionDto));
     }
 
@@ -63,7 +64,7 @@ public class TransactionController {
      * @return the response entity
      */
     @PostMapping("/withdraw")
-    public ResponseEntity<TransactionResponse> withdrawTransaction(@RequestBody TransactionDto transactionDto) {
+    public ResponseEntity<TransactionResponse> withdrawTransaction(@Valid @RequestBody TransactionDto transactionDto) {
         return ResponseEntity.ok().body(transactionService.withdrawTransaction(transactionDto));
     }
 }

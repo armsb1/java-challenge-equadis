@@ -1,6 +1,8 @@
 package javachallengeequadiscustomer.customerservice.service;
 
 import javachallengeequadiscustomer.customerservice.entity.Customer;
+import javachallengeequadiscustomer.customerservice.exception.DuplicateResourceException;
+import javachallengeequadiscustomer.customerservice.exception.ResourceNotFoundException;
 import javachallengeequadiscustomer.customerservice.mapper.CustomerMapper;
 import javachallengeequadiscustomer.customerservice.model.CustomerDto;
 import javachallengeequadiscustomer.customerservice.repository.CustomerRepository;
@@ -38,7 +40,10 @@ public class CustomerService {
      * @return the customer dto
      */
     public CustomerDto findCustomerById(Long id) {
-        return CustomerMapper.toCustomerDTO(customerRepository.findById(id).orElseThrow());
+        return CustomerMapper.toCustomerDTO(
+                customerRepository
+                        .findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("There is no customer with the id " + id)));
     }
 
     /**
@@ -48,7 +53,10 @@ public class CustomerService {
      * @return the customer dto
      */
     public CustomerDto findCustomerByUserProfileId(Long userProfileId) {
-        return CustomerMapper.toCustomerDTO(customerRepository.findByUserProfileId(userProfileId).orElseThrow());
+        return CustomerMapper.toCustomerDTO(
+                customerRepository
+                        .findByUserProfileId(userProfileId)
+                        .orElseThrow(() -> new ResourceNotFoundException("There is no customer with the userProfileId " + userProfileId)));
     }
 
     /**
@@ -59,7 +67,7 @@ public class CustomerService {
      */
     public Customer createCustomer(CustomerDto customerDto) {
         if (customerRepository.existsByEmail(customerDto.email())) {
-            throw new IllegalArgumentException("email already exists.");
+            throw new DuplicateResourceException("There is already customer with this email");
         }
 
         Long userProfileId = customerDto.userProfileId() != null
@@ -67,12 +75,11 @@ public class CustomerService {
                 : generateUserProfileId();
 
         if (customerRepository.existsByUserProfileId(userProfileId)) {
-            throw new IllegalArgumentException("UserProfileId already exists.");
+            throw new DuplicateResourceException("Customer with number " + userProfileId + " already exists.");
         }
 
         Customer customer = CustomerMapper.toCustomer(customerDto);
         customer.setUserProfileId(userProfileId);
-
         return customerRepository.save(customer);
     }
 
